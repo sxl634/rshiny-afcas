@@ -38,33 +38,38 @@ ui <- fluidPage(
     
     # Main panel for displaying outputs ----
     mainPanel(
-      fluidRow(
-        column(
-          width = 4,
-          selectInput(inputId = "timeResponse",label = "Question response:", choices = "", selected = 1)
+      div(
+        style = "width: 95%;",
+        fluidRow( 
+          column(
+            width = 4,
+            selectInput(inputId = "timeResponse",label = "Question response:", choices = "", selected = 1)
+          ),
+          column(
+            width = 4,
+            selectInput(inputId = "timeService",label = "Service:", choices = c("Tri-Service", "Royal Navy", "Royal Marines", "Army", "RAF"), selected = "Tri-Service")
+          ),
+          column(
+            width = 4,
+            selectInput(inputId = "timeFrom",label = "From:", choices = "", selected = 1),
+            selectInput(inputId = "timeTo",label = "To:", choices = "", selected = 1)
+          )
         ),
-        column(
-          width = 4,
-          selectInput(inputId = "timeService",label = "Service:", choices = c("Tri-Service", "Royal Navy", "Royal Marines", "Army", "RAF"), selected = "Tri-Service")
+        div(
+          style = "width: 95%;",
+          fluidRow(
+            withSpinner(plotlyOutput(outputId = "timePlot"))
+          )
         ),
-        column(
-          width = 4,
-          selectInput(inputId = "timeFrom",label = "From:", choices = "", selected = 1),
-          selectInput(inputId = "timeTo",label = "To:", choices = "", selected = 1)
+        fluidRow(
+          column(
+            width = 2,
+            offset = 9,
+            # actionButton("timeDownload", "Dowload")
+            downloadButton("download1")
+          )
           
         )
-      ),
-      fluidRow(
-        withSpinner(plotlyOutput(outputId = "timePlot"))
-      ),
-      fluidRow(
-        column(
-          width = 2,
-          offset = 10,
-          # actionButton("timeDownload", "Dowload")
-          downloadButton("download1")
-        )
-        
       )
       
     )

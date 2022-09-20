@@ -8,6 +8,7 @@
 #
 library(flexdashboard)
 library(shiny)
+library(dplyr)
 library(ggplot2)
 source("R/utils.R")
 source("R/time-series-graph.R")
@@ -57,7 +58,7 @@ server <- function(input, output, session) {
   
   output$timePlot <- renderPlotly({
     validate(
-      need(input$timeResponse, 'Need a valid response option for the question'),
+      need(input$timeResponse %in% c(unique(dataInput()$data$Response)), 'Need a valid response option for the question'),
       need(input$timeService, 'Need a valid response option for the question')
     )
     
@@ -67,21 +68,21 @@ server <- function(input, output, session) {
       & between(Year, input$timeFrom, input$timeTo)
     )
     
-    plotly::ggplotly(time_series_graph(data))
+    plotly::ggplotly(time_series_graph(data, input$timeResponse, ""))
     
   })
-  
-  observeEvent(input$timeDownload, {
-    data <- filter(
-      dataInput()$data, 
-      Response == input$timeResponse & Service == input$timeService
-      & between(Year, input$timeFrom, input$timeTo)
-    )
-    
-    plot <- time_series_graph(data)
-    
-    ggsave(filename = "graph.svg", device = "svg", plot = plot)
-  })
+  # 
+  # observeEvent(input$timeDownload, {
+  #   data <- filter(
+  #     dataInput()$data, 
+  #     Response == input$timeResponse & Service == input$timeService
+  #     & between(Year, input$timeFrom, input$timeTo)
+  #   )
+  #   
+  #   plot <- time_series_graph(data, input$timeResponse, "")
+  #   
+  #   ggsave(filename = "graph.svg", device = "svg", plot = plot)
+  # })
   
   output$download1 <- downloadHandler(
     filename = "graph.svg",
@@ -91,9 +92,9 @@ server <- function(input, output, session) {
         Response == input$timeResponse & Service == input$timeService
         & between(Year, input$timeFrom, input$timeTo)
       )
-      plot <- time_series_graph(data)
+      plot <- time_series_graph(data, input$timeResponse, "")
       print(file)
-      ggsave(filename = file, device = "svg", plot = plot, height = 640, width = 960, units = "px", dpi = 800)
+      ggsave(filename = file, device = "svg", plot = plot, height = 16.9, width = 25.4, units = "cm", dpi = 800)
     }
   )
   
