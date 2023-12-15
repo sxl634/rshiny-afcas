@@ -7,6 +7,7 @@
 #    http://shiny.rstudio.com/
 #
 library(flexdashboard)
+library(svglite)
 library(shiny)
 library(dplyr)
 library(ggplot2)

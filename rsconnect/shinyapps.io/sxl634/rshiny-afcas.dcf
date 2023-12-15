@@ -1,0 +1,12 @@
+name: rshiny-afcas
+title: rshiny-afcas
+username:
+account: sxl634
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 8766090
+bundleId: 8052774
+url: https://sxl634.shinyapps.io/rshiny-afcas/
+asMultiple: FALSE
+asStatic: FALSE
+ignoredFiles: .RData|.Rprofile|data/create data file.R|README.md
